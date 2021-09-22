@@ -55,6 +55,10 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
+            if (IsNewHighScore())
+            {
+                NewHighScore();
+            }
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -72,5 +76,24 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+    }
+
+    public bool IsNewHighScore()
+    {
+        if (m_Points > ScenePersistance.Instance.TopScore)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void NewHighScore()
+    {
+        ScenePersistance.Instance.TopScore = m_Points;
+        ScenePersistance.Instance.TopScorePlayerName = ScenePersistance.Instance.CurrentPlayerName;
+        ScenePersistance.Instance.SaveScore();
     }
 }
